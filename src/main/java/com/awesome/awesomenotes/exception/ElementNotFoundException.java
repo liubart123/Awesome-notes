@@ -3,7 +3,7 @@ package com.awesome.awesomenotes.exception;
 import org.springframework.http.HttpStatus;
 
 public class ElementNotFoundException extends Exception {
-    public HttpStatus status = HttpStatus.UNAUTHORIZED;
+    public HttpStatus status = HttpStatus.NOT_FOUND;
 
     public ElementNotFoundException() {
         super();

@@ -51,6 +51,7 @@
 			<scope>test</scope>
 		</dependency>
 
+
 		<!-- VALIDATION -->
 		<dependency>
 			<groupId>org.modelmapper</groupId>
@@ -84,6 +85,12 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.0</version>
 		</dependency>
 	</dependencies>
 

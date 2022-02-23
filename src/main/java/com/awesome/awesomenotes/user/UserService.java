@@ -58,6 +58,15 @@ public class UserService {
         return foundedUser;
     }
 
+    public User findUserByEmail(String email) throws ElementNotFoundException {
+        User foundedUser = userRepository
+                .findByEmail(email)
+                .orElseThrow(
+                        () -> new ElementNotFoundException(
+                                "User doesn't exist with such email: " + email));
+        return foundedUser;
+    }
+
     public User changeUsersRoles(Set<ERole> roles, Long userId) {
         User updatedUser = new User();
         updatedUser.setId(userId);

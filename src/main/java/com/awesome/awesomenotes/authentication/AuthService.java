@@ -3,12 +3,13 @@ package com.awesome.awesomenotes.authentication;
 import java.util.Date;
 
 import com.awesome.awesomenotes.user.User;
-import com.awesome.awesomenotes.user.UserRepository;
+import com.awesome.awesomenotes.user.role.ERole;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.ExpiredJwtException;
@@ -69,5 +70,18 @@ public class AuthService {
         } catch (Exception e) {
             throw new AuthException("Invalid token");
         }
+    }
+
+    public static void requireRolesForUser(User user, ERole... roles) throws AuthException {
+        boolean allowed = false;
+        for (ERole role : roles) {
+            if (user.getRoles().contains(role)) {
+                allowed = true;
+                break;
+            }
+        }
+
+        if (!allowed)
+            throw new AuthException("User doesn't have appropriate permissions", HttpStatus.FORBIDDEN);
     }
 }

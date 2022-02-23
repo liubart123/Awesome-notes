@@ -7,6 +7,7 @@ import com.awesome.awesomenotes.authentication.AuthException;
 import com.awesome.awesomenotes.authentication.AuthService;
 import com.awesome.awesomenotes.user.User;
 import com.awesome.awesomenotes.user.role.ERole;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
