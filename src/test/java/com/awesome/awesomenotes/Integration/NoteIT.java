@@ -1,30 +1,24 @@
 package com.awesome.awesomenotes.Integration;
 
+import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 
-import javax.transaction.Transactional;
-import javax.validation.constraints.Null;
-
-import com.awesome.awesomenotes.AwesomeNotesApplication;
 import com.awesome.awesomenotes.note.Note;
 import com.awesome.awesomenotes.note.NoteDto;
-import com.awesome.awesomenotes.note.NoteRepository;
 import com.awesome.awesomenotes.note.NoteService;
-import com.awesome.awesomenotes.user.User;
-import com.awesome.awesomenotes.user.UserRepository;
-import com.awesome.awesomenotes.user.UserService;
 import com.awesome.awesomenotes.user.role.ERole;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jayway.jsonpath.JsonPath;
-
-import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.hamcrest.core.IsNot;
 import org.hamcrest.core.IsNull;
@@ -38,9 +32,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import lombok.extern.slf4j.Slf4j;
 

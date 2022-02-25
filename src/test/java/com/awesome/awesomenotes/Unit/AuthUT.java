@@ -1,5 +1,8 @@
 package com.awesome.awesomenotes.Unit;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -7,20 +10,13 @@ import com.awesome.awesomenotes.authentication.AuthException;
 import com.awesome.awesomenotes.authentication.AuthService;
 import com.awesome.awesomenotes.user.User;
 import com.awesome.awesomenotes.user.role.ERole;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @TestInstance(Lifecycle.PER_CLASS)
 public class AuthUT {
     final Integer jwtExpTimeMs = 60000;

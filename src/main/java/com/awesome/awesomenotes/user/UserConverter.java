@@ -5,10 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 
 @Component
-@Slf4j
 @Setter
 public class UserConverter {
 

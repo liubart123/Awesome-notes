@@ -3,14 +3,12 @@ package com.awesome.awesomenotes.Integration;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 
 import com.awesome.awesomenotes.authentication.AuthException;
 import com.awesome.awesomenotes.authentication.AuthService;
 import com.awesome.awesomenotes.exception.ElementCreationException;
 import com.awesome.awesomenotes.user.User;
-import com.awesome.awesomenotes.user.UserRepository;
 import com.awesome.awesomenotes.user.UserService;
 import com.awesome.awesomenotes.user.role.ERole;
 

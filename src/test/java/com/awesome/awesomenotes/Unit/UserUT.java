@@ -1,9 +1,17 @@
 package com.awesome.awesomenotes.Unit;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Optional;
-import com.awesome.awesomenotes.authentication.AuthException;
+
 import com.awesome.awesomenotes.exception.ElementCreationException;
 import com.awesome.awesomenotes.exception.ElementNotFoundException;
 import com.awesome.awesomenotes.user.User;
@@ -13,19 +21,12 @@ import com.awesome.awesomenotes.user.role.ERole;
 import com.awesome.awesomenotes.util.CryptoUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.*;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.mockito.Mockito;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @TestInstance(Lifecycle.PER_CLASS)
 public class UserUT {
     UserRepository userRepository = Mockito.mock(UserRepository.class);

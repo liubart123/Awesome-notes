@@ -1,9 +1,6 @@
 package com.awesome.awesomenotes.user;
 
-import java.util.List;
 import java.util.Set;
-
-import javax.validation.Valid;
 
 import com.awesome.awesomenotes.authentication.AuthException;
 import com.awesome.awesomenotes.authentication.AuthService;
