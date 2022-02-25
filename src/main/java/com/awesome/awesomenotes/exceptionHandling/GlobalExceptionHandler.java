@@ -19,6 +19,7 @@ import java.util.Objects;
 import com.awesome.awesomenotes.authentication.AuthException;
 import com.awesome.awesomenotes.exception.ElementCreationException;
 import com.awesome.awesomenotes.exception.ElementNotFoundException;
+import com.awesome.awesomenotes.exception.LackOfPermissionsException;
 
 @Slf4j(topic = "GLOBAL_EXCEPTION_HANDLER")
 @RestControllerAdvice
@@ -46,25 +47,32 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ElementNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<Object> handleNoSuchElementFoundException(ElementNotFoundException itemNotFoundException,
+    public ResponseEntity<Object> handleNoSuchElementFoundException(ElementNotFoundException e,
             WebRequest request) {
-        log.error("Failed to find the requested element", itemNotFoundException.getMessage());
-        return buildErrorResponse(itemNotFoundException, itemNotFoundException.getStatus(), request);
+        log.error("Failed to find the requested element", e.getMessage());
+        return buildErrorResponse(e, e.getStatus(), request);
     }
 
     @ExceptionHandler(ElementCreationException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<Object> handleNoSuchElementFoundException(ElementCreationException exception,
+    public ResponseEntity<Object> handleNoSuchElementFoundException(ElementCreationException e,
             WebRequest request) {
-        log.error("Failed to create the requested element", exception.getMessage());
-        return buildErrorResponse(exception, exception.getStatus(), request);
+        log.error("Failed to create the requested element", e.getMessage());
+        return buildErrorResponse(e, e.getStatus(), request);
     }
 
     @ExceptionHandler(AuthException.class)
-    public ResponseEntity<Object> handleNoSuchElementFoundException(AuthException authException,
+    public ResponseEntity<Object> handleNoSuchElementFoundException(AuthException e,
             WebRequest request) {
-        log.error("Auth exception: ", authException.getMessage());
-        return buildErrorResponse(authException, authException.getStatus(), request);
+        log.error("Auth exception: ", e.getMessage());
+        return buildErrorResponse(e, e.getStatus(), request);
+    }
+
+    @ExceptionHandler(LackOfPermissionsException.class)
+    public ResponseEntity<Object> handleLackOfPermissionsException(LackOfPermissionsException e,
+            WebRequest request) {
+        log.error("Lack of permissions exception: ", e.getMessage());
+        return buildErrorResponse(e, e.getStatus(), request);
     }
 
     @ExceptionHandler(Exception.class)

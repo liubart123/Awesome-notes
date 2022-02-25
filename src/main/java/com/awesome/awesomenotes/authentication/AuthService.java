@@ -2,6 +2,7 @@ package com.awesome.awesomenotes.authentication;
 
 import java.util.Date;
 
+import com.awesome.awesomenotes.exception.LackOfPermissionsException;
 import com.awesome.awesomenotes.user.User;
 import com.awesome.awesomenotes.user.role.ERole;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -72,7 +73,7 @@ public class AuthService {
         }
     }
 
-    public static void requireRolesForUser(User user, ERole... roles) throws AuthException {
+    public static void requireAnyRole(User user, ERole... roles) throws AuthException, LackOfPermissionsException {
         boolean allowed = false;
         for (ERole role : roles) {
             if (user.getRoles().contains(role)) {
@@ -82,6 +83,18 @@ public class AuthService {
         }
 
         if (!allowed)
-            throw new AuthException("User doesn't have appropriate permissions", HttpStatus.FORBIDDEN);
+            throw new LackOfPermissionsException("User doesn't have appropriate permissions", HttpStatus.FORBIDDEN);
+    }
+
+    public static boolean doesUserContainAnyRole(User user, ERole... roles) {
+        boolean allowed = false;
+        for (ERole role : roles) {
+            if (user.getRoles().contains(role)) {
+                allowed = true;
+                break;
+            }
+        }
+
+        return allowed;
     }
 }

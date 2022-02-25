@@ -55,11 +55,8 @@ public abstract class UserDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class UserLoginResponse {
-        @NotBlank
+        private Long Id;
         private String username;
-        @NotBlank
-        @Size(max = 50)
-        @Email
         private String email;
         private Set<ERole> roles = new HashSet<>();
         private String token;

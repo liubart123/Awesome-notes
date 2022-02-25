@@ -4,6 +4,7 @@ import javax.validation.Valid;
 
 import com.awesome.awesomenotes.exception.ElementCreationException;
 import com.awesome.awesomenotes.exception.ElementNotFoundException;
+import com.awesome.awesomenotes.exception.LackOfPermissionsException;
 import com.awesome.awesomenotes.user.User;
 import com.awesome.awesomenotes.user.UserConverter;
 import com.awesome.awesomenotes.user.UserDto;
@@ -60,14 +61,14 @@ public class AuthController {
 
     @GetMapping(path = "/admin")
     public void getForAdmin(@RequestAttribute(name = "user") User user)
-            throws ElementNotFoundException, AuthException {
-        AuthService.requireRolesForUser(user, ERole.ROLE_ADMIN);
+            throws ElementNotFoundException, AuthException, LackOfPermissionsException {
+        AuthService.requireAnyRole(user, ERole.ROLE_ADMIN);
     }
 
     @GetMapping(path = "/moderator")
     public void getForModerator(@RequestAttribute(name = "user") User user)
-            throws ElementNotFoundException, AuthException {
-        AuthService.requireRolesForUser(user, ERole.ROLE_MODERATOR);
+            throws ElementNotFoundException, AuthException, LackOfPermissionsException {
+        AuthService.requireAnyRole(user, ERole.ROLE_MODERATOR);
     }
 
 }

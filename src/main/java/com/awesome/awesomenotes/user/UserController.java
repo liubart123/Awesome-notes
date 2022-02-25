@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import com.awesome.awesomenotes.authentication.AuthException;
 import com.awesome.awesomenotes.authentication.AuthService;
+import com.awesome.awesomenotes.exception.LackOfPermissionsException;
 import com.awesome.awesomenotes.user.role.ERole;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +29,8 @@ public class UserController {
     @PatchMapping(path = "/{id}/roles")
     public String registerUser(@RequestBody Set<ERole> roles,
             @RequestAttribute(name = "user") User authorizedUser,
-            @PathVariable(name = "id") Long userId) throws AuthException {
-        AuthService.requireRolesForUser(authorizedUser, ERole.ROLE_ADMIN);
+            @PathVariable(name = "id") Long userId) throws AuthException, LackOfPermissionsException {
+        AuthService.requireAnyRole(authorizedUser, ERole.ROLE_ADMIN);
         userService.changeUsersRoles(roles, userId);
         return "Roles were changed";
     }

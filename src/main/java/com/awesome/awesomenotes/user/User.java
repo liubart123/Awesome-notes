@@ -1,11 +1,14 @@
 package com.awesome.awesomenotes.user;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.*;
 
+import com.awesome.awesomenotes.note.Note;
 import com.awesome.awesomenotes.user.role.ERole;
 
 import lombok.AllArgsConstructor;
@@ -29,7 +32,10 @@ public class User {
     private String email;
     private String password;
     @ElementCollection(targetClass = ERole.class)
+    @Enumerated(EnumType.STRING)
     private Set<ERole> roles = new HashSet<>();
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Note> notes = new ArrayList<>();
 
     @Override
     public String toString() {
@@ -39,6 +45,7 @@ public class User {
                 ", email='" + getEmail() + "'" +
                 ", password='" + getPassword() + "'" +
                 ", roles='" + getRoles() + "'" +
+                ", notes='" + getNotes() + "'" +
                 "}";
     }
 
@@ -52,7 +59,8 @@ public class User {
         User user = (User) o;
         return Objects.equals(id, user.id) && Objects.equals(username, user.username)
                 && Objects.equals(email, user.email) && Objects.equals(password, user.password)
-                && Objects.equals(roles, user.roles);
+                && Objects.equals(roles, user.roles)
+                && Objects.equals(notes, user.notes);
     }
 
     @Override
@@ -66,6 +74,16 @@ public class User {
                 this.getUsername(),
                 this.getEmail(),
                 this.getPassword(),
-                new HashSet<>(this.getRoles()));
+                new HashSet<>(this.getRoles()),
+                new ArrayList<>(this.getNotes())); // TODO:may be it should be deep copy for notes...
     }
+
+    public User(Long id, String username, String email, String password, Set<ERole> roles) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
+    }
+
 }

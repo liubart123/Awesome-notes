@@ -25,6 +25,7 @@ public class FilterConfiuration {
         registrationBean.addUrlPatterns("/api/auth/admin");
         registrationBean.addUrlPatterns("/api/auth/moderator");
         registrationBean.addUrlPatterns("/api/users/*");
+        registrationBean.addUrlPatterns("/api/notes/*");
         registrationBean.setOrder(1);
         registrationBean.setName("auth");
 

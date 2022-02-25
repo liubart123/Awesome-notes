@@ -32,7 +32,7 @@ public class UserService {
     @Autowired
     CryptoUtil cryptoUtil;
 
-    public void registerUser(User user) throws ElementCreationException {
+    public User registerUser(User user) throws ElementCreationException {
         User savedUser = user.clone();
         savedUser.setPassword(cryptoUtil.hashString(savedUser.getPassword()));
         if (savedUser.getRoles().size() == 0) {
@@ -42,7 +42,7 @@ public class UserService {
             throw new ElementCreationException("User with email: " + savedUser.getEmail() + " already exists.");
         if (userRepository.existsByUsername(savedUser.getUsername()))
             throw new ElementCreationException("User with username: " + savedUser.getUsername() + " already exists.");
-        userRepository.save(savedUser);
+        return userRepository.save(savedUser);
     }
 
     public User findUserByCreds(User user) throws ElementNotFoundException {
@@ -68,8 +68,7 @@ public class UserService {
     }
 
     public User changeUsersRoles(Set<ERole> roles, Long userId) {
-        User updatedUser = new User();
-        updatedUser.setId(userId);
+        User updatedUser = userRepository.getById(userId);
         updatedUser.setRoles(roles);
         return userRepository.save(updatedUser);
     }
