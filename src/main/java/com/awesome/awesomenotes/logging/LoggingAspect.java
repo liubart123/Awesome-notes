@@ -1,5 +1,6 @@
 package com.awesome.awesomenotes.logging;
 
+import java.lang.reflect.Method;
 import java.util.Arrays;
 
 import org.aspectj.lang.JoinPoint;
@@ -8,9 +9,11 @@ import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -51,8 +54,18 @@ public class LoggingAspect {
         try {
             Object result = joinPoint.proceed();
 
+            MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+            Method method = signature.getMethod();
+
+            String resultString;
+            if (method.isAnnotationPresent(DontLogReturn.class)) {
+                resultString = "skipped";
+            } else {
+                resultString = result.toString();
+            }
+
             log.debug("Exit: {}.{}() with result = {}", joinPoint.getSignature().getDeclaringTypeName(),
-                    joinPoint.getSignature().getName(), result);
+                    joinPoint.getSignature().getName(), resultString);
             return result;
         } catch (IllegalArgumentException e) {
             log.error("Illegal argument: {} in {}.{}()", Arrays.toString(joinPoint.getArgs()),

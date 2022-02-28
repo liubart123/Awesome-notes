@@ -1,81 +1,89 @@
 package com.awesome.awesomenotes.note;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-
-import javax.transaction.Transactional;
+import java.util.Set;
 
 import com.awesome.awesomenotes.exception.ElementNotFoundException;
 import com.awesome.awesomenotes.exception.LackOfPermissionsException;
-import com.awesome.awesomenotes.user.User;
-import com.awesome.awesomenotes.user.UserRepository;
+import com.awesome.awesomenotes.label.Label;
+import com.awesome.awesomenotes.label.LabelRepository;
+import com.awesome.awesomenotes.logging.DontLogReturn;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import lombok.*;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class NoteService {
     @Autowired
     NoteRepository noteRepository;
     @Autowired
-    UserRepository userRepository;
+    LabelRepository labelRepository;
 
-    public Note createNote(Note note, Long authorId) {
-        User author = userRepository.getById(authorId);
-        note.setAuthor(author);
-        note.setId(null);
-        return noteRepository.save(note);
+    final String NOT_FOUND = "Note wasn't found";
+    final String WRONG_AUTHOR = "Wrong author id";
+
+    @DontLogReturn
+    @Transactional(readOnly = true)
+    public List<Note> getByAuthorId(Long authorId) {
+        return noteRepository.findByAuthorIdWithLabels(authorId);
     }
 
-    public Note updateNoteByAuthor(Note note, Long noteId, Long authorId)
-            throws LackOfPermissionsException, ElementNotFoundException {
-        if (noteRepository.findByIdAndFetchAuthor(noteId)
-                .orElseThrow(
-                        () -> new ElementNotFoundException("Note not found with id: " + noteId))
-                .getAuthor()
-                .getId() != authorId)
-            throw new LackOfPermissionsException("provided user isn't author of the note");
-        note.setId(noteId);
-        note.setAuthor(userRepository.getById(authorId));
-        return noteRepository.save(note);
-    }
-
-    public List<Note> getNotesByAuthor(Long authorId) {
-        User author = userRepository.getById(authorId);
-        return noteRepository.findByAuthor(author);
-    }
-
-    public Note getNote(Long id) throws ElementNotFoundException {
-        return noteRepository.findById(id)
-                .orElseThrow(() -> new ElementNotFoundException("Note not found with id: " + id));
-    }
-
-    @Transactional
-    public Note getNoteByAuthor(Long id, Long authorId) throws ElementNotFoundException, LackOfPermissionsException {
-        Note note = noteRepository.findByIdAndFetchAuthor(id)
-                .orElseThrow(() -> new ElementNotFoundException("Note not found with id: " + id));
-        if (note.getAuthor().getId() != authorId)
-            throw new LackOfPermissionsException("provided user isn't author of the note");
+    @DontLogReturn
+    @Transactional(readOnly = true)
+    public Note getByIdWithLabels(Long id, Long authorId) throws ElementNotFoundException, LackOfPermissionsException {
+        Note note = noteRepository.findById(id).get();
+        if (note == null) {
+            throw new ElementNotFoundException(NOT_FOUND);
+        } else if (authorId != null && note.getAuthor().getId() == authorId) {
+            throw new LackOfPermissionsException(WRONG_AUTHOR);
+        }
+        note.getLabels().size();
         return note;
     }
 
-    public void deleteNote(Long id) {
-        noteRepository.deleteById(id);
+    @DontLogReturn
+    @Transactional
+    public void delete(Long id, Long authorId) throws ElementNotFoundException, LackOfPermissionsException {
+        Note note = noteRepository.findById(id).get();
+        if (note == null) {
+            throw new ElementNotFoundException(NOT_FOUND);
+        } else if (authorId != null && note.getAuthor().getId() == authorId) {
+            throw new LackOfPermissionsException(WRONG_AUTHOR);
+        }
+        noteRepository.delete(note);
     }
 
-    public void deleteNoteByAuthor(Long noteId, Long authorId)
-            throws LackOfPermissionsException, ElementNotFoundException {
-        if (noteRepository.findByIdAndFetchAuthor(noteId)
-                .orElseThrow(
-                        () -> new ElementNotFoundException("Note not found with id: " + noteId))
-                .getAuthor()
-                .getId() != authorId)
-            throw new LackOfPermissionsException("provided user isn't author of the note");
-        noteRepository.deleteById(noteId);
+    @DontLogReturn
+    @Transactional
+    public Note create(Note note) {
+        note.setId(null);
+
+        List<Long> ids = new ArrayList<>();
+        for (var label : note.getLabels()) {
+            ids.add(label.getId());
+        }
+
+        note.setLabels(new HashSet<>(labelRepository.findByIdInAndAuthor_id(ids, note.getAuthor().getId())));
+        return noteRepository.save(note);
+    }
+
+    @DontLogReturn
+    @Transactional
+    public Note update(Note note, Long authorId) throws ElementNotFoundException, LackOfPermissionsException {
+        if (noteRepository.findById(note.getId()).isPresent() == false) {
+            throw new ElementNotFoundException(NOT_FOUND);
+        } else if (authorId != null && note.getAuthor().getId() == authorId) {
+            throw new LackOfPermissionsException(WRONG_AUTHOR);
+        }
+        List<Long> ids = new ArrayList<>();
+        for (var label : note.getLabels()) {
+            ids.add(label.getId());
+        }
+
+        note.setLabels(new HashSet<>(labelRepository.findByIdInAndAuthor_id(ids, note.getAuthor().getId())));
+        return noteRepository.save(note);
     }
 }

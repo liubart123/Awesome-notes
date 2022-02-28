@@ -36,55 +36,56 @@ import lombok.Setter;
 @RequestMapping("/api/notes")
 public class NoteController {
     @Autowired
-    NoteService noteService;
-
-    @Autowired
     NoteConverter noteConverter;
 
-    @GetMapping(path = "/")
-    public List<NoteDto.NoteResponse> getAllNotes(
-            @RequestAttribute(name = "user") User authorizedUser)
-            throws ElementNotFoundException, LackOfPermissionsException {
-        return noteService
-                .getNotesByAuthor(authorizedUser.getId())
-                .stream()
-                .map(note -> noteConverter.convert(note))
-                .toList();
-    }
+    // @GetMapping(path = "/")
+    // public List<NoteDto.NoteResponse> getAllNotes(
+    // @RequestAttribute(name = "user") User authorizedUser)
+    // throws ElementNotFoundException, LackOfPermissionsException {
+    // return noteService
+    // .getNotesByAuthor(authorizedUser.getId())
+    // .stream()
+    // .map(note -> noteConverter.convert(note))
+    // .toList();
+    // }
 
-    @GetMapping(path = "/{id}")
-    public NoteDto.NoteResponse getNote(@PathVariable(name = "id") Long id,
-            @RequestAttribute(name = "user") User authorizedUser)
-            throws ElementNotFoundException, LackOfPermissionsException {
-        Note foundNote;
-        if (AuthService.doesUserContainAnyRole(authorizedUser, ERole.ROLE_ADMIN))
-            foundNote = noteService.getNote(id);
-        else
-            foundNote = noteService.getNoteByAuthor(id, authorizedUser.getId());
-        return noteConverter.convert(foundNote);
-    }
+    // @GetMapping(path = "/{id}")
+    // public NoteDto.NoteResponse getNote(@PathVariable(name = "id") Long id,
+    // @RequestAttribute(name = "user") User authorizedUser)
+    // throws ElementNotFoundException, LackOfPermissionsException {
+    // Note foundNote;
+    // if (AuthService.doesUserContainAnyRole(authorizedUser, ERole.ROLE_ADMIN))
+    // foundNote = noteService.getNote(id);
+    // else
+    // foundNote = noteService.getNoteByAuthor(id, authorizedUser.getId());
+    // return noteConverter.convert(foundNote);
+    // }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public NoteDto.NoteResponse createNote(@Valid @RequestBody NoteDto.NoteCreateRequest dto,
-            @RequestAttribute(name = "user") User authorizedUser) {
-        return noteConverter.convert(noteService.createNote(noteConverter.convert(dto), authorizedUser.getId()));
-    }
+    // @PostMapping
+    // @ResponseStatus(HttpStatus.CREATED)
+    // public NoteDto.NoteResponse createNote(@Valid @RequestBody
+    // NoteDto.NoteCreateRequest dto,
+    // @RequestAttribute(name = "user") User authorizedUser) {
+    // return
+    // noteConverter.convert(noteService.createNote(noteConverter.convert(dto),
+    // authorizedUser.getId()));
+    // }
 
-    @PutMapping(path = "/{id}")
-    public NoteDto.NoteResponse updateNote(@PathVariable(name = "id") Long id,
-            @Valid @RequestBody NoteDto.NoteUpdateRequest dto,
-            @RequestAttribute(name = "user") User authorizedUser)
-            throws LackOfPermissionsException, ElementNotFoundException {
-        return noteConverter
-                .convert(noteService.updateNoteByAuthor(noteConverter.convert(dto), id, authorizedUser.getId()));
-    }
+    // @PutMapping(path = "/{id}")
+    // public NoteDto.NoteResponse updateNote(@PathVariable(name = "id") Long id,
+    // @Valid @RequestBody NoteDto.NoteUpdateRequest dto,
+    // @RequestAttribute(name = "user") User authorizedUser)
+    // throws LackOfPermissionsException, ElementNotFoundException {
+    // return noteConverter
+    // .convert(noteService.updateNoteByAuthor(noteConverter.convert(dto), id,
+    // authorizedUser.getId()));
+    // }
 
-    @DeleteMapping(path = "/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteNote(@PathVariable(name = "id") Long id,
-            @RequestAttribute(name = "user") User authorizedUser)
-            throws LackOfPermissionsException, ElementNotFoundException {
-        noteService.deleteNoteByAuthor(id, authorizedUser.getId());
-    }
+    // @DeleteMapping(path = "/{id}")
+    // @ResponseStatus(HttpStatus.NO_CONTENT)
+    // public void deleteNote(@PathVariable(name = "id") Long id,
+    // @RequestAttribute(name = "user") User authorizedUser)
+    // throws LackOfPermissionsException, ElementNotFoundException {
+    // noteService.deleteNoteByAuthor(id, authorizedUser.getId());
+    // }
 }

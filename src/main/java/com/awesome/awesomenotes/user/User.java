@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import com.awesome.awesomenotes.label.Label;
 import com.awesome.awesomenotes.note.Note;
 import com.awesome.awesomenotes.user.role.ERole;
 
@@ -35,7 +36,10 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Set<ERole> roles = new HashSet<>();
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+    // TODO:Change to set, it may create more optimal sql queries
     private List<Note> notes = new ArrayList<>();
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Label> labels = new HashSet<>();
 
     @Override
     public String toString() {
@@ -75,7 +79,8 @@ public class User {
                 this.getEmail(),
                 this.getPassword(),
                 new HashSet<>(this.getRoles()),
-                new ArrayList<>(this.getNotes())); // TODO:may be it should be deep copy for notes...
+                new ArrayList<>(this.getNotes()),
+                new HashSet<>(this.getLabels())); // TODO:may be it should be deep copy for notes...
     }
 
     public User(Long id, String username, String email, String password, Set<ERole> roles) {
