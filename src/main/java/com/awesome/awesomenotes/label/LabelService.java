@@ -3,6 +3,7 @@ package com.awesome.awesomenotes.label;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 import com.awesome.awesomenotes.exception.ElementNotFoundException;
 import com.awesome.awesomenotes.exception.LackOfPermissionsException;
@@ -38,17 +39,20 @@ public class LabelService {
     @Transactional
     @DontLogReturn
     public Label update(Label label, Long authorId) throws ElementNotFoundException, LackOfPermissionsException {
-        Label dbLabel = labelRepository.findById(label.getId()).get();
-        if (dbLabel == null)
+        Optional<Label> dbLabel = labelRepository.findById(label.getId());
+        if (!dbLabel.isPresent())
             throw new ElementNotFoundException(NOT_FOUND);
-        else if (authorId != null && label.getAuthor().getId() == authorId) {
+        else if (authorId != null && dbLabel.get().getAuthor().getId() != authorId) {
             throw new LackOfPermissionsException(WRONG_AUTHOR);
+        }
+        if (label.getAuthor() == null) {
+            label.setAuthor(dbLabel.get().getAuthor());
         }
         List<Long> ids = new ArrayList<>();
         for (var note : label.getNotes()) {
             ids.add(note.getId());
         }
-        label.setNotes(new HashSet<>(noteRepository.findByIdInAndAuthor_id(ids, label.getAuthor().getId())));
+        label.setNotes(new HashSet<>(noteRepository.findByIdInAndAuthor_id(ids, dbLabel.get().getAuthor().getId())));
 
         return labelRepository.save(label);
     }
@@ -56,10 +60,10 @@ public class LabelService {
     @Transactional
     @DontLogReturn
     public void delete(Long id, Long authorId) throws ElementNotFoundException, LackOfPermissionsException {
-        Label label = labelRepository.findById(id).get();
-        if (label == null)
+        Optional<Label> label = labelRepository.findById(id);
+        if (!label.isPresent())
             throw new ElementNotFoundException(NOT_FOUND);
-        else if (authorId != null && label.getAuthor().getId() == authorId) {
+        else if (authorId != null && label.get().getAuthor().getId() != authorId) {
             throw new LackOfPermissionsException(WRONG_AUTHOR);
         }
         labelRepository.deleteById(id);
@@ -68,26 +72,25 @@ public class LabelService {
     @Transactional(readOnly = true)
     @DontLogReturn
     public Label getById(Long id, Long authorId) throws ElementNotFoundException, LackOfPermissionsException {
-        Label label = labelRepository.findById(id).get();
-        if (label == null) {
+        Optional<Label> label = labelRepository.findById(id);
+        if (!label.isPresent()) {
             throw new ElementNotFoundException(NOT_FOUND);
-        } else if (authorId != null && label.getAuthor().getId() == authorId) {
+        } else if (authorId != null && label.get().getAuthor().getId() != authorId) {
             throw new LackOfPermissionsException(WRONG_AUTHOR);
         }
-        return label;
+        return label.get();
     }
 
     @Transactional(readOnly = true)
     @DontLogReturn
     public Label getByIdWithNotes(Long id, Long authorId) throws ElementNotFoundException, LackOfPermissionsException {
-        Label label = labelRepository.findById(id).get();
-        if (label == null) {
+        Optional<Label> label = labelRepository.findByIdWithNotesAndTheirLabels(id);
+        if (!label.isPresent()) {
             throw new ElementNotFoundException(NOT_FOUND);
-        } else if (authorId != null && label.getAuthor().getId() == authorId) {
+        } else if (authorId != null && label.get().getAuthor().getId() != authorId) {
             throw new LackOfPermissionsException(WRONG_AUTHOR);
         }
-        label.getNotes().size();
-        return label;
+        return label.get();
     }
 
     @Transactional(readOnly = true)

@@ -1,6 +1,7 @@
 package com.awesome.awesomenotes.Integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -109,7 +110,7 @@ public class RepositoriesIT {
         Note note = new Note("added note", user1);
         note.getLabels().add(new Label(label.getId(), null, null, null));
         // when
-        note = noteService.create(note);
+        note = noteService.create(note, null);
         // then
         // check note's label
         assertEquals(1, note.getLabels().size());
@@ -168,7 +169,7 @@ public class RepositoriesIT {
         Label savedLabel = new Label(label.getId(), "updated", user2, new HashSet<>());
         note.addLabel(savedLabel);
         // when
-        note = noteService.create(note);
+        note = noteService.create(note, null);
         // then
         assertEquals(1, note.getLabels().size());
         Label actualLabel = labelService.getByIdWithNotes(labelIds.get(0), null);
@@ -186,7 +187,7 @@ public class RepositoriesIT {
         note.addLabel(savedLabel1);
         note.addLabel(savedLabel2);
         // when
-        note = noteService.create(note);
+        note = noteService.create(note, null);
         // then
         assertEquals(0, note.getLabels().size());
     }
@@ -198,10 +199,25 @@ public class RepositoriesIT {
         Label savedLabel = labelService.create(new Label(null, "saved", user2, new HashSet<>()));
         note.addLabel(savedLabel);
         // when
-        note = noteService.create(note);
+        note = noteService.create(note, null);
         // then
         assertEquals(0, note.getLabels().size());
         Label actualLabel = labelService.getByIdWithNotes(savedLabel.getId(), null);
         assertEquals(0, actualLabel.getNotes().size());
+    }
+
+    @Test
+    void testGettingNotesByLabelIncludinRelatedLabels() throws ElementNotFoundException, LackOfPermissionsException {
+        Label label = labelService.getById(labelIds.get(0), null);
+        assertTrue(
+                label.getNotes()
+                        .stream()
+                        .findFirst()
+                        .get()
+                        .getLabels()
+                        .stream()
+                        .findFirst()
+                        .get()
+                        .getName() != null);
     }
 }

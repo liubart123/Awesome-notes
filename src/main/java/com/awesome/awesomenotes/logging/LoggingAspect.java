@@ -58,7 +58,7 @@ public class LoggingAspect {
             Method method = signature.getMethod();
 
             String resultString;
-            if (method.isAnnotationPresent(DontLogReturn.class)) {
+            if (method.isAnnotationPresent(DontLogReturn.class) || result == null) {
                 resultString = "skipped";
             } else {
                 resultString = result.toString();
