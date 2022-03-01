@@ -19,7 +19,7 @@ public interface LabelRepository extends JpaRepository<Label, Long> {
     @DontLogReturn
     List<Label> findByAuthorId(Long authorId);
 
-    @Query("SELECT distinct l FROM Label l JOIN FETCH l.notes n JOIN FETCH n.labels l2 JOIN FETCH l.author a WHERE l.id = (:id)")
+    @Query("SELECT distinct l FROM Label l LEFT JOIN FETCH l.notes n LEFT JOIN FETCH n.labels l2 JOIN FETCH l.author a WHERE l.id = (:id)")
     @DontLogReturn
     Optional<Label> findByIdWithNotesAndTheirLabels(Long id);
 }

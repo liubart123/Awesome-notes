@@ -49,7 +49,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<Object> handleNoSuchElementFoundException(ElementNotFoundException e,
             WebRequest request) {
-        log.error("Failed to find the requested element", e.getMessage());
+        log.error("Failed to find the requested element" + e.getMessage(), e);
         return buildErrorResponse(e, e.getStatus(), request);
     }
 
@@ -57,21 +57,21 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<Object> handleNoSuchElementFoundException(ElementCreationException e,
             WebRequest request) {
-        log.error("Failed to create the requested element", e.getMessage());
+        log.error("Failed to create the requested element" + e.getMessage(), e);
         return buildErrorResponse(e, e.getStatus(), request);
     }
 
     @ExceptionHandler(AuthException.class)
     public ResponseEntity<Object> handleNoSuchElementFoundException(AuthException e,
             WebRequest request) {
-        log.error("Auth exception: ", e.getMessage());
+        log.error("Auth exception: " + e.getMessage(), e);
         return buildErrorResponse(e, e.getStatus(), request);
     }
 
     @ExceptionHandler(LackOfPermissionsException.class)
     public ResponseEntity<Object> handleLackOfPermissionsException(LackOfPermissionsException e,
             WebRequest request) {
-        log.error("Lack of permissions exception: ", e.getMessage());
+        log.error("Lack of permissions exception: " + e.getMessage(), e);
         return buildErrorResponse(e, e.getStatus(), request);
     }
 

@@ -72,7 +72,7 @@ public class LabelController {
             @RequestAttribute(name = "user") User authorizedUser) {
         return labelConverter.convertWithoutNotes(
                 labelService.create(
-                        labelConverter.convert(dto)));
+                        labelConverter.convert(dto), authorizedUser.getId()));
     }
 
     @PutMapping(path = "/{id}")

@@ -70,9 +70,9 @@ public class NoteIT {
                 user1Token = user1.getRight();
                 user2Token = testUtils.getRegisteredUserWithToken(ERole.ROLE_USER).getRight();
 
-                label1 = labelService.create(new Label(null, "label1", user1.getLeft(), new HashSet<>()));
-                label2 = labelService.create(new Label(null, "label2", user1.getLeft(), new HashSet<>()));
-                label3 = labelService.create(new Label(null, "label3", user1.getLeft(), new HashSet<>()));
+                label1 = labelService.create(new Label(null, "label1", user1.getLeft(), new HashSet<>()), null);
+                label2 = labelService.create(new Label(null, "label2", user1.getLeft(), new HashSet<>()), null);
+                label3 = labelService.create(new Label(null, "label3", user1.getLeft(), new HashSet<>()), null);
         }
 
         @Test

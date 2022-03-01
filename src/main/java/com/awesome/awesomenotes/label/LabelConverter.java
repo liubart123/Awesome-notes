@@ -1,8 +1,10 @@
 package com.awesome.awesomenotes.label;
 
+import java.util.HashSet;
 import java.util.stream.Collectors;
 
 import com.awesome.awesomenotes.label.LabelDto.*;
+import com.awesome.awesomenotes.note.Note;
 import com.awesome.awesomenotes.note.NoteConverter;
 
 import org.modelmapper.ModelMapper;
@@ -28,11 +30,13 @@ public class LabelConverter {
 
     public Label convert(LabelCreateRequest dto) {
         Label label = modelMapper.map(dto, Label.class);
+
         return label;
     }
 
     public Label convert(LabelUpdateRequest dto, Long id) {
         Label label = modelMapper.map(dto, Label.class);
+
         label.setId(id);
         return label;
     }

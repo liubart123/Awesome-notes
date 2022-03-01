@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import com.awesome.awesomenotes.exception.ElementNotFoundException;
 import com.awesome.awesomenotes.exception.LackOfPermissionsException;
 import com.awesome.awesomenotes.logging.DontLogReturn;
+import com.awesome.awesomenotes.note.Note;
 import com.awesome.awesomenotes.note.NoteRepository;
+import com.awesome.awesomenotes.user.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,20 +23,23 @@ public class LabelService {
     LabelRepository labelRepository;
     @Autowired
     NoteRepository noteRepository;
+    @Autowired
+    UserRepository userRepository;
 
     final String NOT_FOUND = "Label wasn't found";
     final String WRONG_AUTHOR = "Wrong author id";
 
     @Transactional
     @DontLogReturn
-    public Label create(Label label) {
+    public Label create(Label label, Long authorId) {
         label.setId(null);
-        List<Long> ids = new ArrayList<>();
-        for (var note : label.getNotes()) {
-            ids.add(note.getId());
+
+        if (authorId != null) {
+            label.setAuthor(userRepository.getById(authorId));
         }
-        label.setNotes(new HashSet<>(noteRepository.findByIdInAndAuthor_id(ids, label.getAuthor().getId())));
-        return labelRepository.save(label);
+        label.setNotes(new HashSet<>());
+        label = labelRepository.save(label);
+        return label;
     }
 
     @Transactional
@@ -48,13 +54,9 @@ public class LabelService {
         if (label.getAuthor() == null) {
             label.setAuthor(dbLabel.get().getAuthor());
         }
-        List<Long> ids = new ArrayList<>();
-        for (var note : label.getNotes()) {
-            ids.add(note.getId());
-        }
-        label.setNotes(new HashSet<>(noteRepository.findByIdInAndAuthor_id(ids, dbLabel.get().getAuthor().getId())));
-
-        return labelRepository.save(label);
+        label.setNotes(new HashSet<>());
+        label = labelRepository.save(label);
+        return label;
     }
 
     @Transactional

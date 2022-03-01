@@ -35,8 +35,8 @@ public class AuthService {
 
     public String generateJwt(User user) throws AuthException {
         String userJson;
-        User savedUser = user.clone();
-        savedUser.setPassword("");
+        User savedUser = new User(user.getId(), user.getUsername(), user.getEmail(), user.getRoles());
+
         try {
             userJson = objectMapper.writeValueAsString(savedUser);
         } catch (JsonProcessingException e) {

@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
@@ -17,6 +18,7 @@ import com.awesome.awesomenotes.note.NoteRepository;
 import com.awesome.awesomenotes.note.NoteService;
 import com.awesome.awesomenotes.user.User;
 import com.awesome.awesomenotes.user.UserRepository;
+import com.awesome.awesomenotes.user.role.ERole;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -196,7 +198,7 @@ public class RepositoriesIT {
     void testNoteCreationShouldNotAddLabelOfOtherAuthor() throws ElementNotFoundException, LackOfPermissionsException {
         // given
         Note note = new Note(null, "text", user1, new HashSet<>());
-        Label savedLabel = labelService.create(new Label(null, "saved", user2, new HashSet<>()));
+        Label savedLabel = labelService.create(new Label(null, "saved", user2, new HashSet<>()), null);
         note.addLabel(savedLabel);
         // when
         note = noteService.create(note, null);
@@ -208,7 +210,7 @@ public class RepositoriesIT {
 
     @Test
     void testGettingNotesByLabelIncludinRelatedLabels() throws ElementNotFoundException, LackOfPermissionsException {
-        Label label = labelService.getById(labelIds.get(0), null);
+        Label label = labelService.getByIdWithNotes(labelIds.get(0), null);
         assertTrue(
                 label.getNotes()
                         .stream()
@@ -219,5 +221,15 @@ public class RepositoriesIT {
                         .findFirst()
                         .get()
                         .getName() != null);
+    }
+
+    @Test
+    void testGetNoteWithNoLabelsById() throws ElementNotFoundException, LackOfPermissionsException {
+        User user = new User(null, "username", "email", "password", new HashSet<>(Arrays.asList(ERole.ROLE_USER)));
+        user = userRepository.save(user);
+        Note note = new Note("text", user);
+        note = noteService.create(note, null);
+        List<Note> notes = noteService.getByAuthorId(user.getId());
+        assertEquals(1, notes.size());
     }
 }

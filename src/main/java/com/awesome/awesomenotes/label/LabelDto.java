@@ -38,8 +38,6 @@ public class LabelDto {
     @AllArgsConstructor
     public static class LabelCreateRequest {
         String name;
-        Long authorId;
-        Set<Long> notes;
     }
 
     @Getter
@@ -48,7 +46,5 @@ public class LabelDto {
     @AllArgsConstructor
     public static class LabelUpdateRequest {
         String name;
-        Long authorId;
-        Set<Long> notes;
     }
 }

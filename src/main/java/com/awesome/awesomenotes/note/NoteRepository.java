@@ -16,7 +16,7 @@ public interface NoteRepository extends JpaRepository<Note, Long> {
     @DontLogReturn
     List<Note> findByIdInAndAuthor_id(Iterable<Long> id, Long authorId);
 
-    @Query("SELECT distinct n FROM Note n JOIN FETCH n.labels l JOIN FETCH n.author a WHERE a.id = (:authorId)")
+    @Query("SELECT distinct n FROM Note n LEFT JOIN FETCH n.labels l JOIN FETCH n.author a WHERE a.id = (:authorId)")
     @DontLogReturn
     List<Note> findByAuthorIdWithLabels(@Param("authorId") Long authorId);
 }

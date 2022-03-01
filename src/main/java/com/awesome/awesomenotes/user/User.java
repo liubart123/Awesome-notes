@@ -91,4 +91,11 @@ public class User {
         this.roles = roles;
     }
 
+    public User(Long id, String username, String email, Set<ERole> roles) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.roles = roles;
+    }
+
 }
