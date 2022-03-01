@@ -55,7 +55,7 @@ public class NoteIT {
         private ObjectMapper objectMapper;
         @Autowired
         TestUtils testUtils;
-        String adminToken, user1Token, user2Token;
+        String adminToken, user1Token, user2Token, user3Token;
 
         @Autowired
         LabelService labelService;
@@ -69,6 +69,7 @@ public class NoteIT {
                 Pair<User, String> user1 = testUtils.getRegisteredUserWithToken(ERole.ROLE_USER);
                 user1Token = user1.getRight();
                 user2Token = testUtils.getRegisteredUserWithToken(ERole.ROLE_USER).getRight();
+                user3Token = testUtils.getRegisteredUserWithToken(ERole.ROLE_USER).getRight();
 
                 label1 = labelService.create(new Label(null, "label1", user1.getLeft(), new HashSet<>()), null);
                 label2 = labelService.create(new Label(null, "label2", user1.getLeft(), new HashSet<>()), null);
@@ -217,7 +218,7 @@ public class NoteIT {
                 String response = mockMvc.perform(
                                 post("/api/notes")
                                                 .contentType(MediaType.APPLICATION_JSON)
-                                                .header("Authorization", "Bearer " + user1Token)
+                                                .header("Authorization", "Bearer " + user3Token)
                                                 .content(objectMapper.writeValueAsString(note1)))
                                 .andExpect(status().isCreated())
                                 .andExpect(jsonPath("$.text", is(note1.getText())))
@@ -250,7 +251,7 @@ public class NoteIT {
                 String response = mockMvc.perform(
                                 post("/api/notes")
                                                 .contentType(MediaType.APPLICATION_JSON)
-                                                .header("Authorization", "Bearer " + user1Token)
+                                                .header("Authorization", "Bearer " + user3Token)
                                                 .content(objectMapper.writeValueAsString(note1)))
                                 .andExpect(status().isCreated())
                                 .andExpect(jsonPath("$.text", is(note1.getText())))

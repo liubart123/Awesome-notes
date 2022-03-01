@@ -28,7 +28,7 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.mockito.Mockito;
 
 @TestInstance(Lifecycle.PER_CLASS)
-public class UserUT {
+public class UserTest {
     UserRepository userRepository = Mockito.mock(UserRepository.class);
     UserService userService = new UserService();
 

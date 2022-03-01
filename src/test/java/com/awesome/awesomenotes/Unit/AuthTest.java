@@ -18,7 +18,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 @TestInstance(Lifecycle.PER_CLASS)
-public class AuthUT {
+public class AuthTest {
     final Integer jwtExpTimeMs = 60000;
 
     AuthService authService = new AuthService();

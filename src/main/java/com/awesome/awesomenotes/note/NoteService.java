@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import com.awesome.awesomenotes.exception.ElementNotFoundException;
 import com.awesome.awesomenotes.exception.LackOfPermissionsException;
+import com.awesome.awesomenotes.label.Label;
 import com.awesome.awesomenotes.label.LabelRepository;
 import com.awesome.awesomenotes.logging.DontLogReturn;
 import com.awesome.awesomenotes.user.UserRepository;
@@ -68,7 +69,7 @@ public class NoteService {
         }
 
         List<Long> ids = new ArrayList<>();
-        for (var label : note.getLabels()) {
+        for (Label label : note.getLabels()) {
             ids.add(label.getId());
         }
 
@@ -89,7 +90,7 @@ public class NoteService {
             note.setAuthor(found.get().getAuthor());
         }
         List<Long> ids = new ArrayList<>();
-        for (var label : note.getLabels()) {
+        for (Label label : note.getLabels()) {
             ids.add(label.getId());
         }
 

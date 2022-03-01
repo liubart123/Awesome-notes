@@ -15,6 +15,7 @@ import com.awesome.awesomenotes.user.UserService;
 import com.awesome.awesomenotes.user.role.ERole;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -54,7 +55,7 @@ public class UserIT {
         void initTest() throws Exception {
                 log.info("initng UserIT");
 
-                var tempUser = testUtils.getRegisteredUserWithToken(ERole.ROLE_ADMIN);
+                Pair<User, String> tempUser = testUtils.getRegisteredUserWithToken(ERole.ROLE_ADMIN);
                 adminToken = tempUser.getRight();
                 admin = tempUser.getLeft();
 

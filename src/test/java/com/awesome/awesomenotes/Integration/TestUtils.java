@@ -51,7 +51,7 @@ public class TestUtils {
     public Map<ERole, Pair<User, String>> getThreeRegisteredUsersWithRoles(String emailAndUsernamePrefix)
             throws ElementCreationException, AuthException {
         Map<ERole, Pair<User, String>> map = new HashMap<>();
-        var pair = getRegisteredUserWithToken(new User(
+        Pair<User, String> pair = getRegisteredUserWithToken(new User(
                 null,
                 "admin" + emailAndUsernamePrefix,
                 "admin@asd.asd" + emailAndUsernamePrefix,

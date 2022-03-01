@@ -3,9 +3,11 @@ package com.awesome.awesomenotes.Integration;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.awesome.awesomenotes.user.User;
 import com.awesome.awesomenotes.user.UserService;
 import com.awesome.awesomenotes.user.role.ERole;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -50,7 +52,7 @@ public class AuthIT {
         void initTest() throws Exception {
                 log.info("initng AuthTest");
 
-                var tempUser = testUtils.getRegisteredUserWithToken(ERole.ROLE_ADMIN);
+                Pair<User, String> tempUser = testUtils.getRegisteredUserWithToken(ERole.ROLE_ADMIN);
                 adminToken = tempUser.getRight();
 
                 tempUser = testUtils.getRegisteredUserWithToken(ERole.ROLE_MODERATOR);
