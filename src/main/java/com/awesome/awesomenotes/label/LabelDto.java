@@ -4,6 +4,7 @@ import java.util.Set;
 
 import com.awesome.awesomenotes.note.NoteDto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ public class LabelDto {
     @Setter
     @NoArgsConstructor
     @AllArgsConstructor
+    @Schema
     public static class LabelResposnseWithoutNotes {
         private Long id;
         String name;
@@ -25,6 +27,7 @@ public class LabelDto {
     @Setter
     @NoArgsConstructor
     @AllArgsConstructor
+    @Schema
     public static class LabelResposnse {
         private Long id;
         String name;
@@ -36,6 +39,7 @@ public class LabelDto {
     @Setter
     @NoArgsConstructor
     @AllArgsConstructor
+    @Schema
     public static class LabelCreateRequest {
         String name;
     }
@@ -44,6 +48,7 @@ public class LabelDto {
     @Setter
     @NoArgsConstructor
     @AllArgsConstructor
+    @Schema
     public static class LabelUpdateRequest {
         String name;
     }

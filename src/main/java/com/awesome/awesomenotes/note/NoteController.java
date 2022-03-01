@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,6 +36,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/notes")
+@Tag(name = "Notes", description = "Operations with notes")
 public class NoteController {
     @Autowired
     NoteConverter noteConverter;
@@ -41,6 +44,7 @@ public class NoteController {
     NoteService noteService;
 
     @GetMapping(path = "/")
+    @Operation(description = "Get all notes of logged user")
     public List<NoteDto.NoteResponse> getAllNotes(
             @RequestAttribute(name = "user") User authorizedUser)
             throws ElementNotFoundException, LackOfPermissionsException {
@@ -52,6 +56,7 @@ public class NoteController {
     }
 
     @GetMapping(path = "/{id}")
+    @Operation(description = "Get note of logged user by id")
     public NoteDto.NoteResponse getNote(@PathVariable(name = "id") Long id,
             @RequestAttribute(name = "user") User authorizedUser)
             throws ElementNotFoundException, LackOfPermissionsException {
@@ -65,6 +70,7 @@ public class NoteController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @Operation(description = "Create note")
     public NoteDto.NoteResponse createNote(@Valid @RequestBody NoteDto.NoteCreateRequest dto,
             @RequestAttribute(name = "user") User authorizedUser) {
         return noteConverter.convert(noteService.create(noteConverter.convert(dto),
@@ -72,6 +78,7 @@ public class NoteController {
     }
 
     @PutMapping(path = "/{id}")
+    @Operation(description = "Update note")
     public NoteDto.NoteResponse updateNote(@PathVariable(name = "id") Long id,
             @Valid @RequestBody NoteDto.NoteUpdateRequest dto,
             @RequestAttribute(name = "user") User authorizedUser)
@@ -82,6 +89,7 @@ public class NoteController {
     }
 
     @DeleteMapping(path = "/{id}")
+    @Operation(description = "Delete note")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteNote(@PathVariable(name = "id") Long id,
             @RequestAttribute(name = "user") User authorizedUser)

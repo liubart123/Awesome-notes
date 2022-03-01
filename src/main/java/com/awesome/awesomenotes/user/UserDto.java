@@ -7,6 +7,7 @@ import javax.validation.constraints.*;
 
 import com.awesome.awesomenotes.user.role.ERole;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 public abstract class UserDto {
@@ -14,6 +15,7 @@ public abstract class UserDto {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
+    @Schema
     public static class UserCreationRequest {
         @NotBlank
         private String username;
@@ -31,6 +33,7 @@ public abstract class UserDto {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
+    @Schema
     public static class UserLoginRequest {
         @NotBlank
         private String email;
@@ -43,6 +46,7 @@ public abstract class UserDto {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
+    @Schema
     public static class UserResponse {
         private Long Id;
         private String username;
@@ -54,6 +58,7 @@ public abstract class UserDto {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
+    @Schema
     public static class UserLoginResponse {
         private Long Id;
         private String username;
