@@ -1,13 +1,13 @@
 package com.awesome.awesomenotes.label;
 
-import java.util.HashSet;
 import java.util.Set;
 
-import com.awesome.awesomenotes.note.Note;
 import com.awesome.awesomenotes.note.NoteDto;
-import com.awesome.awesomenotes.note.NoteDto.NoteResponse;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 public class LabelDto {
 

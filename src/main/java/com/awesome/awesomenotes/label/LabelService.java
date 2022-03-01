@@ -1,15 +1,12 @@
 package com.awesome.awesomenotes.label;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import com.awesome.awesomenotes.exception.ElementNotFoundException;
 import com.awesome.awesomenotes.exception.LackOfPermissionsException;
 import com.awesome.awesomenotes.logging.DontLogReturn;
-import com.awesome.awesomenotes.note.Note;
 import com.awesome.awesomenotes.note.NoteRepository;
 import com.awesome.awesomenotes.user.UserRepository;
 

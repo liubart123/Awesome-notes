@@ -1,41 +1,31 @@
 package com.awesome.awesomenotes.Integration;
 
-import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 
 import com.awesome.awesomenotes.authentication.AuthException;
 import com.awesome.awesomenotes.exception.ElementCreationException;
-import com.awesome.awesomenotes.label.Label;
-import com.awesome.awesomenotes.label.LabelService;
 import com.awesome.awesomenotes.label.LabelDto.LabelCreateRequest;
 import com.awesome.awesomenotes.label.LabelDto.LabelResposnse;
 import com.awesome.awesomenotes.label.LabelDto.LabelResposnseWithoutNotes;
 import com.awesome.awesomenotes.label.LabelDto.LabelUpdateRequest;
 import com.awesome.awesomenotes.note.Note;
-import com.awesome.awesomenotes.note.NoteDto;
 import com.awesome.awesomenotes.note.NoteService;
-import com.awesome.awesomenotes.note.NoteDto.NoteCreateRequest;
 import com.awesome.awesomenotes.user.User;
 import com.awesome.awesomenotes.user.role.ERole;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.hamcrest.core.IsNot;
-import org.hamcrest.core.IsNull;
+import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -46,8 +36,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.apache.commons.lang3.tuple.Pair;
-import org.aspectj.lang.annotation.Before;
 
 import lombok.extern.slf4j.Slf4j;
 

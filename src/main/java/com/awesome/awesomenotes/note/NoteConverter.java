@@ -1,12 +1,12 @@
 package com.awesome.awesomenotes.note;
 
-import java.util.HashSet;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import com.awesome.awesomenotes.label.Label;
 import com.awesome.awesomenotes.label.LabelConverter;
-import com.awesome.awesomenotes.note.NoteDto.*;
+import com.awesome.awesomenotes.note.NoteDto.NoteCreateRequest;
+import com.awesome.awesomenotes.note.NoteDto.NoteResponse;
+import com.awesome.awesomenotes.note.NoteDto.NoteUpdateRequest;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

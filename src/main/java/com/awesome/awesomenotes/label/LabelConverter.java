@@ -1,15 +1,13 @@
 package com.awesome.awesomenotes.label;
 
-import java.util.HashSet;
-import java.util.stream.Collectors;
-
-import com.awesome.awesomenotes.label.LabelDto.*;
-import com.awesome.awesomenotes.note.Note;
-import com.awesome.awesomenotes.note.NoteConverter;
+import com.awesome.awesomenotes.label.LabelDto.LabelCreateRequest;
+import com.awesome.awesomenotes.label.LabelDto.LabelResposnseWithoutNotes;
+import com.awesome.awesomenotes.label.LabelDto.LabelUpdateRequest;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import lombok.Getter;
 import lombok.Setter;
 

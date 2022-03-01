@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import com.awesome.awesomenotes.exception.ElementNotFoundException;
 import com.awesome.awesomenotes.exception.LackOfPermissionsException;
-import com.awesome.awesomenotes.label.Label;
 import com.awesome.awesomenotes.label.LabelRepository;
 import com.awesome.awesomenotes.logging.DontLogReturn;
 import com.awesome.awesomenotes.user.UserRepository;
